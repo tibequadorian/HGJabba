@@ -1,0 +1,58 @@
+name: HGJabba
+main: io.github.bluntphenomena.HGJabba
+version: 1.0
+author: bluntphenomena
+
+commands:
+  hg:
+    description: Command to manage the HGJabba plugin
+    usage: Use /hg help for more information
+    permission: hgjabba.user
+  hg help:
+    description: displays help for /hg
+    usage: /hg help
+    permission: hgjabba.user
+  hg start:
+    description: starts the game
+    usage: /hg start
+    permission: hgjabba.admin
+  hg team:
+    description: team commands
+    usage: /hg team <create|list|delete>
+    permission: hgjabba.user
+  hg team create:
+    description: creates a new team
+    usage: /hg team create <teamname> [teamcolor]
+    permission: hgjabba.admin
+  hg team list:
+    description: lists all teams
+    usage: /hg team list
+    permission: hgjabba.user
+  hg team delete:
+    description: deletes a new team
+    usage: /hg team delete <teamname>
+    permission: hgjabba.admin
+  hg player:
+    description: player commands
+    usage: /hg team <add|list|remove>
+    permission: hgjabba.user
+  hg player add:
+    description: adds a player to a team
+    usage: /hg player add <player> <team>
+    permission: hgjabba.admin
+  hg player list:
+    description: lists all player and their team
+    usage: /hg player list
+    permission: hgjabba.user
+  hg player remove:
+    description: removes a player from team
+    usage: /hg player remove <player>
+    permission: hgjabba.admin
+
+permissions:
+  hgjabba.admin:
+    description: Necessary permission to use HGJabba admin commands
+    default: op
+  hgjabba.user:
+    description: Necessary permission to use HGJabba user commands
+    default: true
