@@ -4,7 +4,7 @@
 
 Git, Java and Maven are necessary for building.
 
-Build Spigot for 1.8.8 according to instructions from https://www.spigotmc.org/wiki/buildtools/ because it creates the required dependencies in your local maven repository
+Build Spigot for 1.8.8 according to instructions from https://www.spigotmc.org/wiki/buildtools/ because it creates the required dependencies in your local maven repository.
 
 Then clone this repository and build it with maven.
 
