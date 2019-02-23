@@ -47,3 +47,10 @@ List of available commands:
 /hg player list - lists all player and their team
 /hg player remove - removes a player from team
 ```
+
+Starting a new game is pretty simple and intuitive. `/hg team create <teamname> [teamcolor]` creates a new team which you can add players with `/hg player add <player> <team>`. If everything is ready, the game can be started with `/hg start`.
+
+**Important notes:**
+- During the game building or destroying a nether portal is forbidden
+- Worldborder settings can be configured in the plugins `config.yml`
+- It's recommended to shut down the server properly, otherwise important game data may not be saved
