@@ -1,14 +1,14 @@
 # HGJabba
 
-This is a simple Hunger Games Plugin for Minecraft Spigot Server.
+This is a functional and intuitive Hunger Games Plugin for your own Minecraft Spigot Server to play together with your friends without much effort.
 
 **Features:**
 - Players can only play when all players are online, else the game is paused
-- Completely variable teams with team names and colors
+- Completely variable teams with custom team names and colors
 - Sidebar scoreboard to display current game information
-- Intuitive commands to control the game
+- Simple commands to create the game
 - Unsuitable generated worlds (e.g. too much ocean) are discarded
-- Shrinking worldborder in overworld and nether
+- Configurable shrinking worldborder in overworld and nether
 - First-person spectator view for died players to watch their teammates
 - Free spectator view for died players whose team has been eliminated
 
@@ -32,7 +32,7 @@ $ mvn package
 
 After a successful build the plugin file is located at `./target/HGJabba-1.0-SNAPSHOT.jar`
 
-## How it works
+## How to use
 
 You must be `/op` on the server to have permission for all commands!
 ```
@@ -48,7 +48,7 @@ List of available commands:
 /hg player remove - removes a player from team
 ```
 
-Starting a new game is pretty simple and intuitive. `/hg team create <teamname> [teamcolor]` creates a new team which you can add players with `/hg player add <player> <team>`. If everything is ready, the game can be started with `/hg start`.
+Starting a new game is pretty easy. `/hg team create <teamname> [teamcolor]` creates a new team which you can add players with `/hg player add <player> <team>`. If everything is ready, the game can be started with `/hg start`.
 
 **Important notes:**
 - During the game building or destroying a nether portal is forbidden
