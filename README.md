@@ -1,5 +1,9 @@
 # HGJabba
 
+## Download
+
+The easiest way to get this plugin is to download the .jar directly from https://github.com/bluntphenomena/HGJabba/releases/download/v1.0/HGJabba-1.0-SNAPSHOT.jar
+
 ## Build Instructions
 
 Git, Java and Maven are necessary for building.
