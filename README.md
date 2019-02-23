@@ -52,5 +52,5 @@ Starting a new game is pretty easy. `/hg team create <teamname> [teamcolor]` cre
 
 **Important notes:**
 - During the game building or destroying a nether portal is forbidden
-- Worldborder settings can be configured in the plugins `config.yml`
+- Worldborder settings can be configured in the plugins config.yml
 - It's recommended to shut down the server properly, otherwise important game data may not be saved
