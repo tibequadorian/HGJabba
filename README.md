@@ -35,9 +35,9 @@ After a successful build the plugin file is located at `./target/HGJabba-1.0-SNA
 ## How to use
 
 You must be `/op` on the server to have permission for all commands!
-```
-List of available commands:
 
+**List of available commands:**
+```
 /hg help - displays help for /hg
 /hg start - starts the game
 /hg team create - creates a new team
