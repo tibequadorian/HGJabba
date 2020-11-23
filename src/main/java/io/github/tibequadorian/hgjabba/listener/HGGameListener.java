@@ -1,22 +1,9 @@
-package io.github.bluntphenomena.hgjabba.listener;
+package io.github.tibequadorian.hgjabba.listener;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
-import org.bukkit.TravelAgent;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
+import io.github.tibequadorian.hgjabba.HGChat;
+import io.github.tibequadorian.hgjabba.HGJabba;
+import io.github.tibequadorian.hgjabba.savedata.HGPlayerData;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -27,39 +14,29 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 
-import io.github.bluntphenomena.hgjabba.HGChat;
-import io.github.bluntphenomena.hgjabba.HGJabba;
-import io.github.bluntphenomena.hgjabba.savedata.HGPlayerData;
+import java.util.*;
 
 public class HGGameListener implements Listener {
 
-	private HGJabba game;
+	private final HGJabba game;
 
 	public HGGameListener(HGJabba game) {
 		this.game = game;
 	}
 	
-	
 	public void register() {
 		game.getServer().getPluginManager().registerEvents(this, game);
 	}
-	
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (!player.hasPlayedBefore())
-			player.teleport(game.getSpawn());
+			player.teleport(game.getWorld().getSpawnLocation());
 		game.updatePlayerDisplayName(player);
 		HGPlayerData playerdata = game.getData().getPlayer(player);
 		if (playerdata == null)
@@ -127,14 +104,14 @@ public class HGGameListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		Player killer = player.getKiller();
-		game.getData().getPlayer(player).setAlive(false);
+		game.getData().getPlayer(player).extinguish();
 		String team = game.getData().getPlayer(player).getTeam();
 		if (game.getData().getAliveTeamPlayers(team).isEmpty())
-			game.getData().getTeam(team).setAlive(false);
+			game.getData().getTeam(team).extinguish();
 		
 		player.setGameMode(GameMode.SPECTATOR);
 		for (Player p : game.getServer().getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.WITHER_SPAWN, 1.0f, 1.0f);
+			p.playSound(p.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.0f, 1.0f);
 		}
 		event.setDeathMessage(null);
 		ChatColor playerTeamColor = game.getData().getTeam(team).getColor();
@@ -156,6 +133,7 @@ public class HGGameListener implements Listener {
 		if (game.getData().getAliveTeams().size() == 1) {
 			String winnerteam = game.getData().getAliveTeams().iterator().next();
 			HGChat.broadcast(ChatColor.GOLD+"The team "+game.getData().getTeam(winnerteam).getColor()+winnerteam+ChatColor.GOLD+" has won!");
+			/*
 			Set<Player> alive_players = new HashSet<Player>();
 			for (OfflinePlayer p : game.getData().getAlivePlayers())
 				alive_players.add(Bukkit.getPlayer(p.getUniqueId()));
@@ -164,6 +142,7 @@ public class HGGameListener implements Listener {
 					// TODO: fireworks
 				}
 			}, 0L, 10L);
+			 */
 		}
 	}
 	
@@ -207,6 +186,7 @@ public class HGGameListener implements Listener {
 			event.setCancelled(true);
 	}
 
+	/*
 	@EventHandler
 	public void onPlayerPortalEnter(PlayerPortalEvent event) {
 		event.useTravelAgent(true);
@@ -224,11 +204,12 @@ public class HGGameListener implements Listener {
 		Location loc = travelAgent.findOrCreate(new Location(wld, 0, 64, 0));
 		event.setTo(loc);
 	}
+	 */
 	
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
 		for (Block b : event.blockList()) {
-			if (b.getType() == Material.PORTAL)
+			if (b.getType() == Material.NETHER_PORTAL)
 				event.setCancelled(true);
 		}
 	}
@@ -236,7 +217,7 @@ public class HGGameListener implements Listener {
 	@EventHandler
 	public void onBlockExplode(BlockExplodeEvent event) {
 		for (Block b : event.blockList()) {
-			if (b.getType() == Material.PORTAL)
+			if (b.getType() == Material.NETHER_PORTAL)
 				event.setCancelled(true);
 		}
 	}
@@ -245,7 +226,7 @@ public class HGGameListener implements Listener {
 	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
 		BlockFace face = event.getBlockFace();
 		Location blockLoc = event.getBlockClicked().getLocation().add(face.getModX(), face.getModY(), face.getModZ());
-		if (game.getWorld().getBlockAt(blockLoc).getType() == Material.PORTAL)
+		if (game.getWorld().getBlockAt(blockLoc).getType() == Material.NETHER_PORTAL)
 			event.setCancelled(true);
 	}
 	
@@ -253,12 +234,12 @@ public class HGGameListener implements Listener {
 	public void onBlockBreakEvent(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		if (block.getType() == Material.OBSIDIAN && game.getData().isStarted()) {
-			if (game.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0)).getType() == Material.PORTAL
-					|| game.getWorld().getBlockAt(block.getLocation().add(0, -1, 0)).getType() == Material.PORTAL
-					|| game.getWorld().getBlockAt(block.getLocation().add(0, 0, -1)).getType() == Material.PORTAL
-					|| game.getWorld().getBlockAt(block.getLocation().add(1, 0, 0)).getType() == Material.PORTAL
-					|| game.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType() == Material.PORTAL
-					|| game.getWorld().getBlockAt(block.getLocation().add(0, 0, 1)).getType() == Material.PORTAL) {
+			if (game.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0)).getType() == Material.NETHER_PORTAL
+					|| game.getWorld().getBlockAt(block.getLocation().add(0, -1, 0)).getType() == Material.NETHER_PORTAL
+					|| game.getWorld().getBlockAt(block.getLocation().add(0, 0, -1)).getType() == Material.NETHER_PORTAL
+					|| game.getWorld().getBlockAt(block.getLocation().add(1, 0, 0)).getType() == Material.NETHER_PORTAL
+					|| game.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType() == Material.NETHER_PORTAL
+					|| game.getWorld().getBlockAt(block.getLocation().add(0, 0, 1)).getType() == Material.NETHER_PORTAL) {
 				event.setCancelled(true);
 				Player player = event.getPlayer();
 				HGChat.send(player, ChatColor.RED+"You're not allowed to break this block");

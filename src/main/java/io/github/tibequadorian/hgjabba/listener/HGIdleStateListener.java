@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba.listener;
+package io.github.tibequadorian.hgjabba.listener;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.github.bluntphenomena.hgjabba.HGJabba;
+import io.github.tibequadorian.hgjabba.HGJabba;
 
 public class HGIdleStateListener implements Listener {
 	
-	private HGJabba game;
+	private final HGJabba game;
 	
 	
 	public HGIdleStateListener(HGJabba game) {

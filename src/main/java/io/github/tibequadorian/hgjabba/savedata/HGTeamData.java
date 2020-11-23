@@ -1,10 +1,10 @@
-package io.github.bluntphenomena.hgjabba.savedata;
+package io.github.tibequadorian.hgjabba.savedata;
 
 import org.bukkit.ChatColor;
 
 public class HGTeamData {
 	
-	private ChatColor color;
+	private final ChatColor color;
 	private boolean alive;
 	
 	
@@ -21,7 +21,7 @@ public class HGTeamData {
 	public boolean isAlive() {
 		return alive;
 	}
-	public void setAlive(boolean alive) {
-		this.alive = alive;
+	public void extinguish() {
+		this.alive = false;
 	}
 }

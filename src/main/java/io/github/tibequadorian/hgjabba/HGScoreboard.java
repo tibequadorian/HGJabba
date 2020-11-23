@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;

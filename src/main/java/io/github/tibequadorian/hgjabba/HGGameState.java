@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
 public enum HGGameState {
 	
@@ -8,15 +8,12 @@ public enum HGGameState {
 	RUNNING(false),
 	RUNNING_FALLBACK(false);
 	
-	
 	private boolean idle;
-	
-	
+
 	private HGGameState(boolean idle) {
 		this.idle = idle;
 	}
-	
-	
+
 	public boolean isIdle() {
 		return idle;
 	}

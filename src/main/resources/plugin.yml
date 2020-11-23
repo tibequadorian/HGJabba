@@ -1,7 +1,8 @@
 name: HGJabba
-main: io.github.bluntphenomena.hgjabba.HGJabba
-version: 1.0
-author: bluntphenomena
+main: io.github.tibequadorian.hgjabba.HGJabba
+version: 2.0
+api-version: 1.16
+author: tibequadorian
 
 commands:
   hg:

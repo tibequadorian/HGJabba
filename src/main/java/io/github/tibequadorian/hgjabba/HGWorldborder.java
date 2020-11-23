@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
 public class HGWorldborder {
 	

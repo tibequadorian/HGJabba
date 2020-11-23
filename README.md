@@ -7,30 +7,29 @@ This is a functional and intuitive Hunger Games Plugin for your own Minecraft Sp
 - Completely variable teams with custom team names and colors
 - Sidebar scoreboard to display current game information
 - Simple commands to create the game
-- Unsuitable generated worlds (e.g. too much ocean) are discarded
 - Configurable shrinking worldborder in overworld and nether
 - First-person spectator view for died players to watch their teammates
 - Free spectator view for died players whose team has been eliminated
 
 ## Download
 
-The plugin can be downloaded directly [here](https://github.com/bluntphenomena/HGJabba/releases/download/v1.0/HGJabba-1.0-SNAPSHOT.jar)
+The plugin can be downloaded directly [here](https://github.com/tibequadorian/HGJabba/releases/download/v1.0/HGJabba-1.0-SNAPSHOT.jar) **(OUTDATED!)**
 
 ## Build Instructions
 
 You can also build the plugin yourself. Git, Java and Maven are necessary for building.
 
-Build Spigot for 1.8.8 according to instructions from https://www.spigotmc.org/wiki/buildtools/ because it creates the required dependencies in your local maven repository.
+Build Spigot for 1.16.4 according to instructions from https://www.spigotmc.org/wiki/buildtools/ because it creates the required dependencies in your local maven repository.
 
 Then clone this repository and build it with maven.
 
 ```bash
-$ git clone https://github.com/bluntphenomena/HGJabba.git
+$ git clone https://github.com/tibequadorian/HGJabba.git
 $ cd HGJabba
 $ mvn package
 ```
 
-After a successful build the plugin file is located at `./target/HGJabba-1.0-SNAPSHOT.jar`
+After a successful build the plugin file is located at `./target/HGJabba-2.0-SNAPSHOT.jar`
 
 ## How to use
 

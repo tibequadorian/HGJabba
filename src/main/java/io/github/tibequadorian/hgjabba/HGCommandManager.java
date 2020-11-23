@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,13 +49,12 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 		} else if (args[0].equals("start")) {
 			game.runGame();
 			return true;
-			
 		} else if (args[0].equals("team")) {
 			if (args.length == 1) {
 				if (sender.hasPermission("hgjabba.admin"))
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg team <create|list|delete>");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg team <create|list|delete>");
 				else if (sender.hasPermission("hgjabba.user"))
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg team list");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg team list");
 				return true;
 			} else if (args[1].equals("create")) {
 				if (args.length == 3 || args.length == 4) {
@@ -64,16 +63,16 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 					if (args.length == 4)
 						color = args[3];
 					game.getData().addTeam(team, ChatColor.valueOf(color.toUpperCase()));
-					HGChat.send(sender, "The team "+game.getData().getTeam(team).getColor()+team+ChatColor.RESET+" was created");
+					HGChat.send(sender, "The team " + game.getData().getTeam(team).getColor() + team + ChatColor.RESET + " was created");
 				} else {
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg team create <teamname> [teamcolor]");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg team create <teamname> [teamcolor]");
 				}
 				return true;
 			} else if (args[1].equals("list")) {
 				Set<String> teams = game.getData().getTeams();
-				HGChat.send(sender, "There are "+teams.size()+" teams");
+				HGChat.send(sender, "There are " + teams.size() + " teams");
 				for (String t : teams) {
-					HGChat.send(sender, "- "+game.getData().getTeam(t).getColor()+t+ChatColor.RESET+" ("+game.getData().getTeamPlayers(t).size()+")");
+					HGChat.send(sender, "- " + game.getData().getTeam(t).getColor() + t + ChatColor.RESET + " (" + game.getData().getTeamPlayers(t).size() + ")");
 				}
 				return true;
 			} else if (args[1].equals("delete")) {
@@ -81,18 +80,18 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 					String team = args[2];
 					ChatColor teamcolor = game.getData().getTeam(team).getColor();
 					game.getData().removeTeam(team);
-					HGChat.send(sender, "The team "+teamcolor+team+ChatColor.RESET+" was deleted");
+					HGChat.send(sender, "The team " + teamcolor + team + ChatColor.RESET + " was deleted");
 				} else {
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg team delete <team>");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg team delete <team>");
 				}
 				return true;
 			}
 		} else if (args[0].equals("player")) {
 			if (args.length == 1) {
 				if (sender.hasPermission("hgjabba.admin"))
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg player <add|list|remove>");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg player <add|list|remove>");
 				else if (sender.hasPermission("hgjabba.user"))
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg player list");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg player list");
 				return false;
 			} else if (args[1].equals("add")) {
 				if (args.length == 4) {
@@ -100,21 +99,21 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 					String team = args[3];
 					Player player = Bukkit.getPlayer(playername);
 					if (player == null) {
-						HGChat.send(sender, ChatColor.RED+playername+" is currently not online!");
+						HGChat.send(sender, ChatColor.RED + playername + " is currently not online!");
 						return true;
 					}
 					game.getData().addPlayer(player, team);
-					HGChat.send(sender, "Added "+playername+" to the team "+game.getData().getTeam(team).getColor()+team);
+					HGChat.send(sender, "Added " + playername + " to the team " + game.getData().getTeam(team).getColor() + team);
 				} else {
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg player add <player> <team>");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg player add <player> <team>");
 				}
 				return true;
 			} else if (args[1].equals("list")) {
 				Set<OfflinePlayer> players = game.getData().getIngamePlayers();
-				HGChat.send(sender, "There are "+players.size()+" players in the game");
+				HGChat.send(sender, "There are " + players.size() + " players in the game");
 				for (OfflinePlayer p : players) {
 					String team = game.getData().getPlayer(p).getTeam();
-					HGChat.send(sender, "- "+p.getName()+" ["+game.getData().getTeam(team).getColor()+team+ChatColor.RESET+"]");
+					HGChat.send(sender, "- " + p.getName() + " [" + game.getData().getTeam(team).getColor() + team + ChatColor.RESET + "]");
 				}
 				return true;
 			} else if (args[1].equals("remove")) {
@@ -122,21 +121,20 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 					String playername = args[2];
 					Player player = Bukkit.getPlayer(playername);
 					if (player == null) {
-						HGChat.send(sender, ChatColor.RED+playername+" is currently not online!");
+						HGChat.send(sender, ChatColor.RED + playername + " is currently not online!");
 						return true;
 					}
 					String team = game.getData().getPlayer(player).getTeam();
 					game.getData().removePlayer(player);
-					HGChat.send(sender, "Removed "+playername+" from the team "+game.getData().getTeam(team).getColor()+team);
+					HGChat.send(sender, "Removed " + playername + " from the team " + game.getData().getTeam(team).getColor() + team);
 				} else {
-					HGChat.send(sender, ChatColor.RED+"Usage: /hg player remove <player>");
+					HGChat.send(sender, ChatColor.RED + "Usage: /hg player remove <player>");
 				}
 				return true;
 			}
 		}
 		return false;
 	}
-	
 	
 	private static final String[] ADMIN_HG_SUGGESTIONS = { "help", "player", "start", "team" };
 	private static final String[] USER_HG_SUGGESTIONS = { "help", "player", "team" };
@@ -146,7 +144,6 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 	private static final String[] USER_PLAYER_SUGGESTIONS = { "list" };
 	private static final String[] TEAMCOLOR_SUGGESTIONS = {"black", "dark_blue", "dark_green", "dark_aqua", "dark_red", "dark_purple", "gold", "gray",
 				"dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow", "white" };
-	
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -198,5 +195,4 @@ public class HGCommandManager implements CommandExecutor, TabCompleter {
 		Collections.sort(completions);
 		return completions;
 	}
-
 }

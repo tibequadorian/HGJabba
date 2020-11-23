@@ -1,25 +1,16 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
+import io.github.tibequadorian.hgjabba.listener.HGGameListener;
+import io.github.tibequadorian.hgjabba.listener.HGIdleStateListener;
+import io.github.tibequadorian.hgjabba.savedata.HGSaveData;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.github.bluntphenomena.hgjabba.listener.HGGameListener;
-import io.github.bluntphenomena.hgjabba.listener.HGIdleStateListener;
-import io.github.bluntphenomena.hgjabba.savedata.HGPlayerData;
-import io.github.bluntphenomena.hgjabba.savedata.HGSaveData;
-import io.github.bluntphenomena.hgjabba.util.WorldCreatorUtil;
+import io.github.tibequadorian.hgjabba.savedata.HGPlayerData;
 
 public class HGJabba extends JavaPlugin implements Listener {
 
@@ -37,11 +28,7 @@ public class HGJabba extends JavaPlugin implements Listener {
     private HGGameListener gameListener;
     private HGIdleStateListener idleStateListener;
 
-    private static final String WORLD_NAME = "world-hgjabba";
-    private World world;
-    private World world_nether;
-    private Location spawn;
-    private long grace_period = DEFAULT_GRACE_PERIOD;
+    private final long grace_period = DEFAULT_GRACE_PERIOD;
 
     @Override
     public void onEnable() {
@@ -62,32 +49,24 @@ public class HGJabba extends JavaPlugin implements Listener {
         gameListener.register();
         idleStateListener.register();
 
-        // setup
+        // auto setup
         if (!gameData.isSetup()) {
             setupGame();
         }
-        // worlds
-        world = Bukkit.createWorld(new WorldCreator(WORLD_NAME).environment(Environment.NORMAL));
-        world_nether = Bukkit.createWorld(new WorldCreator(WORLD_NAME+"_nether").environment(Environment.NETHER));
-        spawn = new Location(world, 0, 125, 0);
-        // run
+        // continue if running
         if (gameData.isRunning()) {
             setWaitingState();
         }
-
     }
 
     @Override
     public void onDisable() {
-
         gameData.saveData();
     }
 
-
-    private void setupGame() {
-        WorldCreatorUtil.initialize(WORLD_NAME, 1000);
-        world = WorldCreatorUtil.create();
-        // create safespace area
+    public void setupGame() {
+        // create safespace
+        World world = getWorld();
         for (int x = -16; x < 16; x++) {
             for (int z = -16; z < 16; z++) {
                 world.getBlockAt(x, 124, z).setType(Material.BARRIER);
@@ -100,17 +79,20 @@ public class HGJabba extends JavaPlugin implements Listener {
         }
         world.setSpawnLocation(0, 125, 0);
         world.setFullTime(0);
-        world.setGameRuleValue("doDaylightCycle", "false");
-        gameData.setSetup(true);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        gameData.setGamestage(HGGamestage.SETUP);
     }
 
     public void runGame() {
         setWaitingState();
         HGChat.broadcastPrefix(ChatColor.GOLD+"The game will begin when all players are connected...");
-        gameData.setRunning(true);
+        gameData.setGamestage(HGGamestage.RUNNING);
     }
 
     private void startGame() {
+        World world = getWorld();
         // destroy safespace area
         for (int x = -16; x < 16; x++) {
             for (int z = -16; z < 16; z++) {
@@ -134,7 +116,7 @@ public class HGJabba extends JavaPlugin implements Listener {
         }
         gameWorldborder.start();
         gameThread.setTime(0L);
-        gameData.setStarted(true);
+        gameData.setGamestage(HGGamestage.STARTED);
     }
 
 
@@ -147,7 +129,7 @@ public class HGJabba extends JavaPlugin implements Listener {
     }
 
     public void setWaitingState() {
-        world.setGameRuleValue("doDaylightCycle", "false");
+        getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         gameWorldborder.pause();
         idleStateListener.register();
         for (Player p : gameData.getOnlineAlivePlayers())
@@ -161,7 +143,7 @@ public class HGJabba extends JavaPlugin implements Listener {
     public void setRunningState() {
         if (!gameData.isStarted())
             startGame();
-        world.setGameRuleValue("doDaylightCycle", "true");
+        getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         if (gameThread.getTime() >= gameWorldborder.getStartMovingTime())
             gameWorldborder.unpause();
         idleStateListener.unregister();
@@ -244,15 +226,11 @@ public class HGJabba extends JavaPlugin implements Listener {
     }
 
     public World getWorld() {
-        return world;
+        return getServer().getWorlds().get(0);
     }
 
     public World getWorldNether() {
-        return world_nether;
-    }
-
-    public Location getSpawn() {
-        return spawn;
+        return getServer().getWorlds().get(1);
     }
 
     public long getGracePeriod() {

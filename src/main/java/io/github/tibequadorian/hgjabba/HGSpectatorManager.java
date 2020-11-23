@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba;
+package io.github.tibequadorian.hgjabba;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import io.github.tibequadorian.hgjabba.util.SpectatorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import io.github.bluntphenomena.hgjabba.util.SpectatorUtil;
-
 public class HGSpectatorManager {
-	
-	private static final long ASSIGN_SPECTATOR_TARGET_DELAY = 40L; // 2 seconds
 	
 	private HGJabba game;
 	private TrackingRangeThread thread;
@@ -69,7 +66,7 @@ public class HGSpectatorManager {
 			public void run() {
 				assignNewSpectatorTarget(player);
 			}
-		}, ASSIGN_SPECTATOR_TARGET_DELAY);
+		}, 40L);
 	}
 	
 	

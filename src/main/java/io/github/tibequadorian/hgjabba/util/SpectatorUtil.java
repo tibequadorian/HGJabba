@@ -1,11 +1,11 @@
-package io.github.bluntphenomena.hgjabba.util;
+package io.github.tibequadorian.hgjabba.util;
 
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_8_R3.PacketPlayOutCamera;
+import net.minecraft.server.v1_16_R3.PacketPlayOutCamera;
 
 public class SpectatorUtil {
 	

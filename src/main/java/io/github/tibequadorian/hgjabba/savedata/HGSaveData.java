@@ -1,4 +1,4 @@
-package io.github.bluntphenomena.hgjabba.savedata;
+package io.github.tibequadorian.hgjabba.savedata;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,31 +12,25 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import io.github.bluntphenomena.hgjabba.HGJabba;
-import io.github.bluntphenomena.hgjabba.HGWorldborder;
+import io.github.tibequadorian.hgjabba.HGJabba;
+import io.github.tibequadorian.hgjabba.HGWorldborder;
 
 public class HGSaveData {
 	
-	private HGJabba game;
-	private FileConfiguration config;
-	
-	private boolean setup;
-	private boolean running;
-	private boolean started;
+	private final HGJabba game;
+	private final FileConfiguration config;
+
+	private int gamestage;
 	private HashMap<UUID,HGPlayerData> ingame_players = new HashMap<UUID,HGPlayerData>();
 	private HashMap<String,HGTeamData> teams = new HashMap<String,HGTeamData>();
-	
 	
 	public HGSaveData(HGJabba game) {
 		this.game = game;
 		this.config = game.getConfig();
 	}
 	
-	
 	public void setDefaults() {
-		config.addDefault("setup", false);
-		config.addDefault("running", false);
-		config.addDefault("started", false);
+		config.addDefault("gamestage", 0);
 		config.addDefault("time", 0L);
 		config.addDefault("worldborder.initial_radius", HGWorldborder.DEFAULT_INITIAL_RADIUS);
 		config.addDefault("worldborder.final_radius", HGWorldborder.DEFAULT_FINAL_RADIUS);
@@ -47,9 +41,7 @@ public class HGSaveData {
 	}
 	
 	public void loadData() {
-		setup = config.getBoolean("setup");
-		running = config.getBoolean("running");
-		started = config.getBoolean("started");
+		gamestage = config.getInt("gamestage");
 		game.getThread().setTime(config.getLong("time"));
 		ConfigurationSection worldborderSection = config.getConfigurationSection("worldborder");
 		if (worldborderSection != null) {
@@ -82,9 +74,7 @@ public class HGSaveData {
 	}
 	
 	public void saveData() {
-		config.set("setup", setup);
-		config.set("running", running);
-		config.set("started", started);
+		config.set("gamestage", gamestage);
 		config.set("time", game.getThread().getTime());
 		config.set("worldborder", null);
 		config.set("worldborder.initial_radius", game.getWorldborder().getInitialRadius());
@@ -94,39 +84,30 @@ public class HGSaveData {
 		config.set("players", null);
 		for (OfflinePlayer op : getIngamePlayers()) {
 			String p = op.getUniqueId().toString();
-			config.set("players."+p+".alive", getPlayer(op).isAlive());
-			config.set("players."+p+".team", getPlayer(op).getTeam());
+			config.set("players." + p + ".alive", getPlayer(op).isAlive());
+			config.set("players." + p + ".team", getPlayer(op).getTeam());
 		}
 		config.set("teams", null);
 		for (String t : getTeams()) {
-			config.set("teams."+t+".color", getTeam(t).getColor().name().toLowerCase());
-			config.set("teams."+t+".alive", getTeam(t).isAlive());
+			config.set("teams." + t + ".color", getTeam(t).getColor().name().toLowerCase());
+			config.set("teams." + t + ".alive", getTeam(t).isAlive());
 		}
 		game.saveConfig();
 	}
 	
-	
 	public boolean isSetup() {
-		return setup;
+		return gamestage >= 1;
 	}
-	public void setSetup(boolean setup) {
-		this.setup = setup;
-	}
-	
 	public boolean isRunning() {
-		return running;
+		return gamestage >= 2;
 	}
-	public void setRunning(boolean running) {
-		this.running = running;
-	}
-	
 	public boolean isStarted() {
-		return started;
+		return gamestage >= 3;
 	}
-	public void setStarted(boolean started) {
-		this.started = true;
+
+	public void setGamestage(int gamestage) {
+		this.gamestage = gamestage;
 	}
-	
 	
 	public Set<OfflinePlayer> getIngamePlayers() {
 		Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
