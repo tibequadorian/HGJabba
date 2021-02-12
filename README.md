@@ -13,7 +13,7 @@ This is a functional and intuitive Hunger Games Plugin for your own Minecraft Sp
 
 ## Download
 
-The plugin can be downloaded directly [here](https://github.com/tibequadorian/HGJabba/releases/download/v1.0/HGJabba-1.0-SNAPSHOT.jar) **(OUTDATED!)**
+The plugin can be downloaded directly [here](https://github.com/tibequadorian/HGJabba/releases/download/v2.0/HGJabba-2.0-SNAPSHOT.jar)
 
 ## Build Instructions
 
